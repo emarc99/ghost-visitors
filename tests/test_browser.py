@@ -13,7 +13,7 @@ EXPECTED_BROKEN = {
 def walk(browser, base, ghost_id):
     body = Body(browser, GHOSTS[ghost_id])
     try:
-        for path in ("/", "/order"):
+        for path in ("/", "/order", "/thanks?name=Rosa&qty=1&item=conchas&day=November+1&email=r%40example.com"):
             body.goto(base + path)
             body.observe()
         return {e.kind for e in body.log.items}, body.log
