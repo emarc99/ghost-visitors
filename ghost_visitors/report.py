@@ -82,7 +82,7 @@ def _visit(v: dict) -> str:
         f'<tr><td>{s["n"]}</td><td>{_e(s["page"])}</td><td>{_e(s["thought"])}</td>'
         f'<td><span class="fright" style="width:{max(4, s["fright"] * 8)}px" title="fright {s["fright"]}/10"></span></td>'
         f'<td><code>{_e(_action(s["action"]))}</code><br><small>{_e(s["result"])}</small></td>'
-        f'<td><a href="{_e(s["screenshot"])}">view</a></td></tr>' for s in v["steps"])
+        f'<td><a href="{_e(s["screenshot"])}" aria-label="Screenshot of step {s["n"]}">view</a></td></tr>' for s in v["steps"])
     parts.append(f"<h3>The visit, step by step</h3><table><tr><th>#</th><th>Page</th><th>Thought</th><th>Fright</th>"
                  f"<th>Action</th><th></th></tr>{rows}</table>")
     shots = [s["screenshot"] for s in v["steps"][:1]] + ([v["final_screenshot"]] if v.get("final_screenshot") else [])
