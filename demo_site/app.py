@@ -37,6 +37,7 @@ BASE = """<!doctype html>
   body { margin: 0; font-family: Georgia, serif; background: #fffaf0; }
   header { background: #7c2d12; color: #fff7ed; padding: 16px 24px; }
   header a { color: #fde68a; }
+  header a, .card a { display: inline-block; padding: 10px 6px; }
   .card { background: #fff; border: 1px solid #fed7aa; border-radius: 8px; padding: 16px; margin: 12px 0; }
   h1, h2 { color: #7c2d12; }
   label { display: block; margin-top: 12px; font-weight: bold; }
