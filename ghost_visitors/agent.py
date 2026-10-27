@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
@@ -60,6 +61,7 @@ class Visit:
     whispers: list[dict] = field(default_factory=list)
     also_measured: list[dict] = field(default_factory=list)
     raw_complaints: list = field(default_factory=list)
+    raw_report: dict = field(default_factory=dict)
     verdict: str = ""
     epitaph: str = ""
     final_screenshot: str = ""
@@ -105,9 +107,29 @@ Write your haunting report as a JSON object:
 Each complaint must cite the evidence ids it rests on. Only complain about things that actually troubled you."""
 
 
+def unwrap(reply: dict, keys: tuple[str, ...]) -> dict:
+    """Small models often nest the answer ({"report": {...}}); find the dict that has the keys we asked for."""
+    queue = [reply]
+    while queue:
+        current = queue.pop(0)
+        if any(k in current for k in keys):
+            return current
+        queue.extend(v for v in current.values() if isinstance(v, dict))
+    return reply
+
+
 def normalize(decision: dict) -> dict:
     action = {k: v for k, v in decision.items() if k not in ("thought", "fright")}
-    action["action"] = str(action.get("action", "")).strip().lower()
+    inner = action.get("action")
+    if isinstance(inner, dict):
+        action = {**{k: v for k, v in action.items() if k != "action"}, **inner}
+    kind = str(action.get("action", "")).strip().lower()
+    match = re.fullmatch(r"([a-z_]+)\s*\[?(\d+)\]?", kind)
+    if match and "target" not in action:
+        kind, action["target"] = match.group(1), match.group(2)
+    action["action"] = kind
+    action.pop("thought", None)
+    action.pop("fright", None)
     if "target" in action:
         try:
             action["target"] = int(str(action["target"]).strip("[] "))
@@ -140,8 +162,9 @@ def haunt(browser: Browser, ghost: Ghost, url: str, llm: LLM, out_dir: Path,
             body.screenshot(str(out_dir / shot))
             decision = llm.chat_json(system, step_prompt(history, seen, n, max_steps))
             action = normalize(decision)
-            thought = str(decision.get("thought", "")).strip()
-            fright = _clamp(decision.get("fright"))
+            flat = {**(decision["action"] if isinstance(decision.get("action"), dict) else {}), **decision}
+            thought = str(flat.get("thought", "")).strip()
+            fright = _clamp(flat.get("fright"))
             page = urlparse(scan["url"]).path or "/"
             if action["action"] == "done":
                 visit.outcome = "succeeded" if str(action.get("outcome", "")).lower() == "succeeded" else "gave_up"
@@ -163,7 +186,8 @@ def haunt(browser: Browser, ghost: Ghost, url: str, llm: LLM, out_dir: Path,
             body.log.add("goal_not_completed", visit.final_page,
                          f"left after {len(visit.steps)} step(s) on {visit.final_page}: {visit.reason or visit.outcome}")
         evidence = [e.as_dict() for e in body.log.items]
-        report = llm.chat_json(system, report_prompt(visit, evidence))
+        visit.raw_report = llm.chat_json(system, report_prompt(visit, evidence))
+        report = unwrap(visit.raw_report, ("complaints", "verdict", "epitaph"))
         visit.raw_complaints = report.get("complaints") or []
         visit.verdict = str(report.get("verdict", "")).strip()
         visit.epitaph = str(report.get("epitaph", "")).strip()

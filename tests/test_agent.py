@@ -1,4 +1,4 @@
-from ghost_visitors.agent import haunt, normalize
+from ghost_visitors.agent import haunt, normalize, unwrap
 from ghost_visitors.llm import Usage
 from ghost_visitors.personas import GHOSTS
 
@@ -18,6 +18,20 @@ class ScriptedLLM:
 
 def test_normalize_coerces_targets_and_case():
     assert normalize({"thought": "hm", "action": "Click", "target": "[4]"}) == {"action": "click", "target": 4}
+
+
+def test_normalize_accepts_shapes_small_models_produce():
+    assert normalize({"thought": "hm", "fright": 1, "action": {"action": "click", "target": 3}}) == {"action": "click", "target": 3}
+    assert normalize({"action": "click [7]"}) == {"action": "click", "target": 7}
+    assert normalize({"action": {"action": "fill", "target": "5", "text": "Rosa", "thought": "x"}}) == \
+        {"action": "fill", "target": 5, "text": "Rosa"}
+
+
+def test_unwrap_finds_nested_report():
+    nested = {"haunting_report": {"verdict": "v", "complaints": []}}
+    assert unwrap(nested, ("complaints", "verdict")) == {"verdict": "v", "complaints": []}
+    assert unwrap({"verdict": "v"}, ("verdict",)) == {"verdict": "v"}
+    assert unwrap({"other": 1}, ("verdict",)) == {"other": 1}
 
 
 def test_keyboard_ghost_blocked_by_clickable_div(browser, bakery, tmp_path):
