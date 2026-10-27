@@ -50,7 +50,7 @@ def main(argv: list[str] | None = None) -> int:
     h.add_argument("--goal", default=DEFAULT_GOAL)
     h.add_argument("--max-steps", type=int, default=12)
     h.add_argument("--out", type=Path, default=Path("reports"))
-    h.add_argument("--model", help="model name (default: $GHOST_LLM_MODEL or gemma4:e4b)")
+    h.add_argument("--model", help="model name (default: $GHOST_LLM_MODEL or gemma4:e2b)")
     h.add_argument("--base-url", help="OpenAI-compatible endpoint (default: $GHOST_LLM_BASE_URL or local Ollama)")
     h.add_argument("--headed", action="store_true", help="show the browser windows")
     h.add_argument("--open", action="store_true", help="open the report when done")

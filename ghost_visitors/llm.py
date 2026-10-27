@@ -14,7 +14,7 @@ import urllib.request
 from dataclasses import dataclass, field
 
 DEFAULT_BASE_URL = "http://localhost:11434/v1"
-DEFAULT_MODEL = "gemma4:e4b"
+DEFAULT_MODEL = "gemma4:e2b"
 
 
 class LLMError(RuntimeError):

@@ -1,6 +1,6 @@
 """Send every ghost to the broken and the fixed Marigold Bakery, keep the raw runs, and score them.
 
-Usage: python eval/run_eval.py [--model gemma4:e4b] [--max-steps 12]
+Usage: python eval/run_eval.py [--model gemma4:e2b] [--max-steps 12]
 Raw runs (run.json per site) land in eval/results/<model>/, screenshots in reports/eval/.
 """
 
