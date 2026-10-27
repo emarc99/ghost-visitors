@@ -33,6 +33,16 @@ def test_unbacked_claims_become_whispers_with_reasons():
     ]
 
 
+def test_ids_are_pulled_out_of_quoted_evidence_lines():
+    complaints = [
+        {"kind": "horizontal_scroll", "text": "Sideways.", "evidence": ["E1 horizontal_scroll on /: page is 980px wide"]},
+        {"kind": "small_tap_target", "text": "Tiny.", "evidence": "E2, E7"},
+    ]
+    kept, dropped = judge(complaints, make_log())
+    assert [k["evidence"] for k in kept] == [["E1"]]
+    assert dropped[0]["why"] == "cites E7, which was never measured"
+
+
 def test_duplicates_and_junk_are_ignored():
     complaints = [
         {"kind": "horizontal_scroll", "text": "Sideways!", "evidence": ["E1"]},

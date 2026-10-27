@@ -6,6 +6,8 @@ of the same kind. Everything else is kept as a "whisper": shown, but marked unpr
 
 from __future__ import annotations
 
+import re
+
 from .browser import EvidenceLog
 
 KINDS = (
@@ -20,6 +22,15 @@ KINDS = (
 )
 
 
+def cited_ids(cited) -> list[str]:
+    """Small models often quote the whole evidence line ("E1 slow_load on /: ...") instead of "E1"."""
+    ids = []
+    for item in cited if isinstance(cited, list) else [cited]:
+        text = str(item).strip().upper()
+        ids.extend(re.findall(r"\bE\d+\b", text) or ([text] if text else []))
+    return list(dict.fromkeys(ids))
+
+
 def judge(complaints: list, log: EvidenceLog) -> tuple[list[dict], list[dict]]:
     kept, dropped, seen_kinds = [], [], set()
     for raw in complaints if isinstance(complaints, list) else []:
@@ -27,8 +38,7 @@ def judge(complaints: list, log: EvidenceLog) -> tuple[list[dict], list[dict]]:
             continue
         kind = str(raw.get("kind", "")).strip().lower()
         text = str(raw.get("text", "")).strip()
-        cited = raw.get("evidence") or []
-        ids = [str(i).strip().upper() for i in (cited if isinstance(cited, list) else [cited])]
+        ids = cited_ids(raw.get("evidence") or [])
         complaint = {"kind": kind, "text": text, "evidence": ids}
         if not text:
             continue
