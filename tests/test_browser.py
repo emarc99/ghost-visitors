@@ -45,6 +45,22 @@ def test_keyboard_ghost_cannot_see_the_clickable_div(browser, bakery):
     assert "(no name announced)" in seen
 
 
+def test_keyboard_ghost_hears_focus_and_typing_into_nothing(browser, bakery):
+    body = Body(browser, GHOSTS["tomas"])
+    try:
+        body.goto(bakery["fixed"] + "/order")
+        scan, _, seen = body.observe()
+        assert "Focus is on: the page itself" in seen
+        assert "nothing took the text" in body.act({"action": "type", "text": "Rosa"}, scan)
+        for _ in range(3):
+            heard = body.act({"action": "tab"}, scan)
+        assert heard.endswith('combobox "Bread"')
+        body.act({"action": "tab"}, scan)
+        assert body.act({"action": "type", "text": "Rosa"}, scan) == "typed 'Rosa' into [4] 'Your name'"
+    finally:
+        body.close()
+
+
 def test_keyboard_ghost_can_submit_fixed_form(browser, bakery):
     body = Body(browser, GHOSTS["tomas"])
     try:

@@ -240,8 +240,12 @@ def describe(scan: dict, ghost: Ghost, new_evidence: list[Evidence]) -> str:
             line += f" (grey hint text: '{c['placeholder']}')"
         lines.append(line)
     if ghost.keyboard_only:
-        focus = f"[{scan['focused']}]" if scan["focused"] else "the page itself (nothing focused)"
-        lines.append(f"Focus is on: {focus}")
+        focused = next((c for c in scan["controls"] if c["id"] == scan["focused"]), None)
+        if focused:
+            name = f'"{focused["name"]}"' if focused["name"] else "(no name announced)"
+            lines.append(f"Focus is on: [{focused['id']}] {focused['role']} {name}")
+        else:
+            lines.append("Focus is on: the page itself (nothing focused); press tab to reach the first control")
     if new_evidence:
         lines.append("You noticed: " + "; ".join(f"{e.id} {e.kind}: {e.detail}" for e in new_evidence))
     return "\n".join(lines)
@@ -302,16 +306,43 @@ class Body:
             result += f"; the form was not sent, the browser points at {where}: '{first['message']}'"
         return result
 
+    def _focused(self, scan: dict) -> tuple[dict | None, bool]:
+        """The control a screen reader would announce, and whether typing into it does anything."""
+        info = self.page.evaluate("""() => {
+          const el = document.activeElement;
+          if (!el || el === document.body) return null;
+          return {id: parseInt(el.getAttribute('data-ghost-id'), 10) || null,
+                  takes_text: el.matches('input:not([type=button]):not([type=submit]), textarea, select, [contenteditable]')};
+        }""")
+        if not info:
+            return None, False
+        return next((c for c in scan["controls"] if c["id"] == info["id"]), None), info["takes_text"]
+
+    @staticmethod
+    def _announce(control: dict | None) -> str:
+        if control is None:
+            return "focus is on the page itself"
+        name = f'"{control["name"]}"' if control["name"] else "(no name announced)"
+        return f"focus is on [{control['id']}] {control['role']} {name}"
+
     def _do(self, kind: str, action: dict, scan: dict) -> str:
         keys = {"tab": "Tab", "shift_tab": "Shift+Tab", "enter": "Enter", "space": " "}
         if self.ghost.keyboard_only:
             if kind in keys:
+                before = self.page.url
                 self.page.keyboard.press(keys[kind] if kind != "space" else "Space")
                 self.page.wait_for_timeout(500 if kind in ("enter", "space") else 150)
-                return f"pressed {keys[kind].strip() or 'Space'}"
+                pressed = f"pressed {keys[kind].strip() or 'Space'}"
+                if self.page.url != before:
+                    return pressed
+                return f"{pressed}; {self._announce(self._focused(scan)[0])}"
             if kind == "type":
-                self.page.keyboard.type(str(action.get("text", "")))
-                return f"typed '{action.get('text', '')}'"
+                text = str(action.get("text", ""))
+                control, takes_text = self._focused(scan)
+                self.page.keyboard.type(text)
+                if not takes_text:
+                    return f"typed '{text}', but {self._announce(control)}, so nothing took the text"
+                return f"typed '{text}' into [{control['id'] if control else '?'}] '{(control or {}).get('name') or 'field'}'"
             return f"'{kind}' isn't something you can do with a keyboard; use tab, shift_tab, enter, space or type"
         if kind == "scroll":
             self.page.evaluate("window.scrollBy(0, Math.round(window.innerHeight * 0.8))")
