@@ -59,6 +59,18 @@ def test_keyboard_ghost_can_submit_fixed_form(browser, bakery):
         body.close()
 
 
+def test_blocked_submit_is_reported_to_the_ghost(browser, bakery):
+    body = Body(browser, GHOSTS["rosa"])
+    try:
+        body.goto(bakery["fixed"] + "/order")
+        scan, _, _ = body.observe()
+        submit = next(c["id"] for c in scan["controls"] if c["name"] == "Place order")
+        result = body.act({"action": "click", "target": submit}, scan)
+    finally:
+        body.close()
+    assert "the form was not sent, the browser points at [4]" in result
+
+
 def test_measure_reports_each_kind_once_per_page():
     log = EvidenceLog(("horizontal_scroll",))
     scan = {"url": "http://x/order", "scroll_width": 980, "inner_width": 375, "controls": [], "texts": [], "load_ms": 100}

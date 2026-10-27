@@ -144,6 +144,18 @@ SCAN_JS = r"""
 """
 
 
+# A blocked submit shows a bubble a sighted user sees and a screen reader announces; record it for the ghost.
+WATCH_INVALID_JS = """
+window.__ghostInvalid = [];
+addEventListener('invalid', e => {
+  const el = e.target;
+  window.__ghostInvalid.push({id: el.getAttribute('data-ghost-id'), message: el.validationMessage});
+}, true);
+"""
+
+READ_INVALID_JS = "() => { const seen = window.__ghostInvalid || []; window.__ghostInvalid = []; return seen; }"
+
+
 @dataclass
 class Evidence:
     id: str
@@ -247,6 +259,7 @@ class Body:
             locale="en-US",
         )
         self.context.set_default_timeout(30000)
+        self.context.add_init_script(WATCH_INVALID_JS)
         self.page: Page = self.context.new_page()
         if ghost.network:
             cdp = self.context.new_cdp_session(self.page)
@@ -278,7 +291,15 @@ class Body:
         except PlaywrightError:
             pass
         if self.page.url != before:
-            result += f"; now on {urlparse(self.page.url).path or '/'}"
+            return result + f"; now on {urlparse(self.page.url).path or '/'}"
+        try:
+            blocked = self.page.evaluate(READ_INVALID_JS)
+        except PlaywrightError:
+            blocked = []
+        if blocked:
+            first = blocked[0]
+            where = f"[{first['id']}]" if first.get("id") else "a field"
+            result += f"; the form was not sent, the browser points at {where}: '{first['message']}'"
         return result
 
     def _do(self, kind: str, action: dict, scan: dict) -> str:
