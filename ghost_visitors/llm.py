@@ -58,6 +58,19 @@ class LLM:
     usage: Usage = field(default_factory=Usage)
     _json_mode: bool = True
 
+    def ping(self) -> list[str]:
+        """List the models the endpoint serves; raises LLMError if it can't be reached."""
+        headers = {"Authorization": f"Bearer {self.api_key}"} if self.api_key else {}
+        req = urllib.request.Request(f"{self.base_url.rstrip('/')}/models", headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.load(resp)
+        except urllib.error.HTTPError as err:
+            raise LLMError(f"HTTP {err.code} from {self.base_url}") from err
+        except (urllib.error.URLError, OSError) as err:
+            raise LLMError(f"can't reach {self.base_url}: {getattr(err, 'reason', err)}") from err
+        return [m.get("id", "") for m in data.get("data", [])]
+
     def chat_json(self, system: str, user: str) -> dict:
         # Gemma has no system role; its chat template folds instructions into the first user turn.
         messages = [{"role": "user", "content": f"{system.strip()}\n\n{user.strip()}"}]
