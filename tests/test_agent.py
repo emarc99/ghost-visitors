@@ -23,6 +23,8 @@ def test_normalize_coerces_targets_and_case():
 def test_normalize_accepts_shapes_small_models_produce():
     assert normalize({"thought": "hm", "fright": 1, "action": {"action": "click", "target": 3}}) == {"action": "click", "target": 3}
     assert normalize({"action": "click [7]"}) == {"action": "click", "target": 7}
+    assert normalize({"fill": "4", "text": "Rosa", "action": ""}) == {"action": "fill", "target": 4, "text": "Rosa"}
+    assert normalize({"scroll": True}) == {"action": "scroll"}
     assert normalize({"action": {"action": "fill", "target": "5", "text": "Rosa", "thought": "x"}}) == \
         {"action": "fill", "target": 5, "text": "Rosa"}
 

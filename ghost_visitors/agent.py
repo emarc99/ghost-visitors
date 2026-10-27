@@ -35,6 +35,9 @@ KEYBOARD_ACTIONS = """Actions (keyboard only, like a real screen reader user):
 To fill a field: Tab until "Focus is on" shows that field's number, then type."""
 
 
+ACTION_NAMES = ("click", "fill", "select", "scroll", "back", "tab", "shift_tab", "type", "enter", "space", "done")
+
+
 @dataclass
 class Step:
     n: int
@@ -85,6 +88,11 @@ When a form asks for details, make up realistic ones (a name, an email like your
 Say done with "succeeded" only when the page confirms your goal is complete. If something truly blocks you, give up."""
 
 
+def persona_prompt(ghost: Ghost, url: str, goal: str) -> str:
+    return (f"You are {ghost.name}, a ghost of a real person. {ghost.story}\nYour voice: {ghost.voice}\n"
+            f"You just visited {url}. Your goal was: {goal}")
+
+
 def step_prompt(history: list[str], seen: str, n: int, max_steps: int) -> str:
     done = "\n".join(history[-6:]) or "nothing yet"
     return f"Step {n} of {max_steps}.\nWhat you did so far:\n{done}\n\nWhat you perceive now:\n{seen}\n\nYour next action, as JSON only:"
@@ -124,6 +132,13 @@ def normalize(decision: dict) -> dict:
     if isinstance(inner, dict):
         action = {**{k: v for k, v in action.items() if k != "action"}, **inner}
     kind = str(action.get("action", "")).strip().lower()
+    if not kind:
+        named = next((k for k in ACTION_NAMES if k in action), None)
+        if named:
+            value = action.pop(named)
+            kind = named
+            if isinstance(value, (int, str)) and str(value).strip("[] ").isdigit():
+                action.setdefault("target", value)
     match = re.fullmatch(r"([a-z_]+)\s*\[?(\d+)\]?", kind)
     if match and "target" not in action:
         kind, action["target"] = match.group(1), match.group(2)
@@ -186,7 +201,7 @@ def haunt(browser: Browser, ghost: Ghost, url: str, llm: LLM, out_dir: Path,
             body.log.add("goal_not_completed", visit.final_page,
                          f"left after {len(visit.steps)} step(s) on {visit.final_page}: {visit.reason or visit.outcome}")
         evidence = [e.as_dict() for e in body.log.items]
-        visit.raw_report = llm.chat_json(system, report_prompt(visit, evidence))
+        visit.raw_report = llm.chat_json(persona_prompt(ghost, url, goal), report_prompt(visit, evidence))
         report = unwrap(visit.raw_report, ("complaints", "verdict", "epitaph"))
         visit.raw_complaints = report.get("complaints") or []
         visit.verdict = str(report.get("verdict", "")).strip()
