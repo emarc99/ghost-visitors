@@ -18,6 +18,7 @@ MIN_TARGET_PX = 24
 MIN_TEXT_PX = 12
 MIN_CONTRAST = 4.5
 MIN_CONTRAST_LARGE = 3.0
+EVERY_GHOST = ("goal_not_completed",)
 
 SCAN_JS = r"""
 () => {
@@ -160,7 +161,7 @@ class EvidenceLog:
     items: list[Evidence] = field(default_factory=list)
 
     def add(self, kind: str, page: str, detail: str) -> Evidence | None:
-        if kind not in self.lens or any(e.kind == kind and e.page == page for e in self.items):
+        if kind not in self.lens + EVERY_GHOST or any(e.kind == kind and e.page == page for e in self.items):
             return None
         item = Evidence(f"E{len(self.items) + 1}", kind, page, detail)
         self.items.append(item)
