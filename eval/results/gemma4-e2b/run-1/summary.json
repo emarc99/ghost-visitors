@@ -1,0 +1,162 @@
+{
+  "model": "gemma4:e2b",
+  "planted": 7,
+  "found_raw": 7,
+  "found_guarded": 7,
+  "false_alarms_raw": 3,
+  "false_alarms_guarded": 1,
+  "unbacked_claims_raw": 2,
+  "fixed_site_complaints_raw": 4,
+  "fixed_site_complaints_kept": 1,
+  "claimed_success_but_didnt": 0,
+  "rows": [
+    {
+      "mode": "broken",
+      "ghost": "marisol",
+      "outcome": "succeeded",
+      "reached_thanks": true,
+      "claimed_success": true,
+      "planted": [
+        "horizontal_scroll",
+        "slow_load",
+        "small_tap_target"
+      ],
+      "found_raw": [
+        "horizontal_scroll",
+        "slow_load",
+        "small_tap_target"
+      ],
+      "found_guarded": [
+        "horizontal_scroll",
+        "slow_load",
+        "small_tap_target"
+      ],
+      "false_raw": [],
+      "false_guarded": [],
+      "unbacked_raw": [],
+      "complaints_raw": 3,
+      "complaints_kept": 3,
+      "steps": 8,
+      "seconds": 182.6,
+      "error": ""
+    },
+    {
+      "mode": "broken",
+      "ghost": "tomas",
+      "outcome": "ran_out_of_steps",
+      "reached_thanks": false,
+      "claimed_success": false,
+      "planted": [
+        "not_keyboard_reachable",
+        "unnamed_control"
+      ],
+      "found_raw": [
+        "not_keyboard_reachable",
+        "unnamed_control"
+      ],
+      "found_guarded": [
+        "not_keyboard_reachable",
+        "unnamed_control"
+      ],
+      "false_raw": [],
+      "false_guarded": [],
+      "unbacked_raw": [],
+      "complaints_raw": 3,
+      "complaints_kept": 3,
+      "steps": 16,
+      "seconds": 410.2,
+      "error": ""
+    },
+    {
+      "mode": "broken",
+      "ghost": "rosa",
+      "outcome": "succeeded",
+      "reached_thanks": true,
+      "claimed_success": true,
+      "planted": [
+        "low_contrast",
+        "small_text"
+      ],
+      "found_raw": [
+        "low_contrast",
+        "small_text"
+      ],
+      "found_guarded": [
+        "low_contrast",
+        "small_text"
+      ],
+      "false_raw": [],
+      "false_guarded": [],
+      "unbacked_raw": [],
+      "complaints_raw": 2,
+      "complaints_kept": 2,
+      "steps": 11,
+      "seconds": 249.6,
+      "error": ""
+    },
+    {
+      "mode": "fixed",
+      "ghost": "marisol",
+      "outcome": "succeeded",
+      "reached_thanks": true,
+      "claimed_success": true,
+      "planted": [],
+      "found_raw": [],
+      "found_guarded": [],
+      "false_raw": [
+        "small_tap_target"
+      ],
+      "false_guarded": [
+        "small_tap_target"
+      ],
+      "unbacked_raw": [],
+      "complaints_raw": 1,
+      "complaints_kept": 1,
+      "steps": 6,
+      "seconds": 147.2,
+      "error": ""
+    },
+    {
+      "mode": "fixed",
+      "ghost": "tomas",
+      "outcome": "ran_out_of_steps",
+      "reached_thanks": false,
+      "claimed_success": false,
+      "planted": [],
+      "found_raw": [],
+      "found_guarded": [],
+      "false_raw": [],
+      "false_guarded": [],
+      "unbacked_raw": [],
+      "complaints_raw": 1,
+      "complaints_kept": 0,
+      "steps": 16,
+      "seconds": 412.1,
+      "error": ""
+    },
+    {
+      "mode": "fixed",
+      "ghost": "rosa",
+      "outcome": "succeeded",
+      "reached_thanks": true,
+      "claimed_success": true,
+      "planted": [],
+      "found_raw": [],
+      "found_guarded": [],
+      "false_raw": [
+        "low_contrast",
+        "small_text"
+      ],
+      "false_guarded": [],
+      "unbacked_raw": [
+        "low_contrast",
+        "small_text"
+      ],
+      "complaints_raw": 2,
+      "complaints_kept": 0,
+      "steps": 8,
+      "seconds": 182.8,
+      "error": ""
+    }
+  ]
+}

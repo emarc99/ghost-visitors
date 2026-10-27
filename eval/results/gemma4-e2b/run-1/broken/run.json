@@ -1,0 +1,919 @@
+{
+  "url": "http://127.0.0.1:49364/",
+  "goal": "Order some bread for the Day of the Dead, as you would in real life.",
+  "model": "gemma4:e2b",
+  "base_url": "http://localhost:11434/v1",
+  "started": "2026-10-28 00:42",
+  "seconds": 843.0,
+  "usage": {
+    "calls": 38,
+    "prompt_tokens": 28858,
+    "completion_tokens": 8413,
+    "seconds": 821.0
+  },
+  "visits": [
+    {
+      "ghost": "marisol",
+      "name": "Marisol",
+      "url": "http://127.0.0.1:49364/",
+      "goal": "Order some bread for the Day of the Dead, as you would in real life.",
+      "outcome": "succeeded",
+      "reason": "Order confirmed on thank you page",
+      "final_page": "/thanks",
+      "steps": [
+        {
+          "n": 1,
+          "page": "/",
+          "thought": "Okay, bread. I need to order Pan de muerto.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 3
+          },
+          "result": "tapped [3] 'Order Pan de muerto'; now on /order",
+          "screenshot": "marisol-01.png"
+        },
+        {
+          "n": 2,
+          "page": "/order",
+          "thought": "Fill in my name and email quickly.",
+          "fright": 3,
+          "action": {
+            "action": "fill",
+            "target": 4,
+            "text": "Marisol Ghost",
+            "next_action": {
+              "action": "fill",
+              "target": 5,
+              "text": "marisol@example.com",
+              "next_action": {
+                "action": "click",
+                "target": 10
+              }
+            }
+          },
+          "result": "typed 'Marisol Ghost' into [4] 'Your name'",
+          "screenshot": "marisol-02.png"
+        },
+        {
+          "n": 3,
+          "page": "/order",
+          "thought": "Need more bread. Then place the order.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 9
+          },
+          "result": "tapped [9] 'One more'",
+          "screenshot": "marisol-03.png"
+        },
+        {
+          "n": 4,
+          "page": "/order",
+          "thought": "How many bread do I need? Two sounds right.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 10
+          },
+          "result": "tapped [10] 'Place order'; the form was not sent, the browser points at [5]: 'Please fill out this field.'",
+          "screenshot": "marisol-04.png"
+        },
+        {
+          "n": 5,
+          "page": "/order",
+          "thought": "Need to fill the email field. Quick.",
+          "fright": 3,
+          "action": {
+            "action": "fill",
+            "target": 5,
+            "text": "marisolghost@example.com"
+          },
+          "result": "typed 'marisolghost@example.com' into [5] 'textbox'",
+          "screenshot": "marisol-05.png"
+        },
+        {
+          "n": 6,
+          "page": "/order",
+          "thought": "Select the Pan de muerto bread.",
+          "fright": 2,
+          "action": {
+            "action": "select",
+            "target": 3,
+            "text": "Pan de muerto ($6)"
+          },
+          "result": "chose 'Pan de muerto ($6)' in [3] 'Bread'",
+          "screenshot": "marisol-06.png"
+        },
+        {
+          "n": 7,
+          "page": "/order",
+          "thought": "Just click place order. Almost done.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 10
+          },
+          "result": "tapped [10] 'Place order'; now on /thanks",
+          "screenshot": "marisol-07.png"
+        },
+        {
+          "n": 8,
+          "page": "/thanks",
+          "thought": "Order confirmed. Done.",
+          "fright": 0,
+          "action": {
+            "action": "done",
+            "outcome": "succeeded",
+            "reason": "Order confirmed on thank you page"
+          },
+          "result": "left the site",
+          "screenshot": "marisol-08.png"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "E1",
+          "kind": "slow_load",
+          "page": "/",
+          "detail": "took 3.4s to load (limit 3s)"
+        },
+        {
+          "id": "E2",
+          "kind": "horizontal_scroll",
+          "page": "/",
+          "detail": "page is 981px wide on a 375px screen"
+        },
+        {
+          "id": "E3",
+          "kind": "horizontal_scroll",
+          "page": "/order",
+          "detail": "page is 981px wide on a 375px screen"
+        },
+        {
+          "id": "E4",
+          "kind": "small_tap_target",
+          "page": "/order",
+          "detail": "2 target(s) under 24px: 'One fewer' (16x16px), 'One more' (16x16px)"
+        },
+        {
+          "id": "E5",
+          "kind": "horizontal_scroll",
+          "page": "/thanks",
+          "detail": "page is 981px wide on a 375px screen"
+        },
+        {
+          "id": "E6",
+          "kind": "small_tap_target",
+          "page": "/thanks",
+          "detail": "1 target(s) under 24px: 'Back to the breads' (130x19px)"
+        }
+      ],
+      "hauntings": [
+        {
+          "kind": "slow_load",
+          "text": "The page took too long to load. Three seconds is too much time for bread.",
+          "evidence": [
+            "E1"
+          ],
+          "measured": [
+            {
+              "id": "E1",
+              "kind": "slow_load",
+              "page": "/",
+              "detail": "took 3.4s to load (limit 3s)"
+            }
+          ]
+        },
+        {
+          "kind": "horizontal_scroll",
+          "text": "The page is way too wide for my phone. I kept scrolling sideways.",
+          "evidence": [
+            "E2",
+            "E3",
+            "E5"
+          ],
+          "measured": [
+            {
+              "id": "E2",
+              "kind": "horizontal_scroll",
+              "page": "/",
+              "detail": "page is 981px wide on a 375px screen"
+            },
+            {
+              "id": "E3",
+              "kind": "horizontal_scroll",
+              "page": "/order",
+              "detail": "page is 981px wide on a 375px screen"
+            },
+            {
+              "id": "E5",
+              "kind": "horizontal_scroll",
+              "page": "/thanks",
+              "detail": "page is 981px wide on a 375px screen"
+            }
+          ]
+        },
+        {
+          "kind": "small_tap_target",
+          "text": "The buttons are tiny. I couldn't hit 'One more' or 'Back to the breads'.",
+          "evidence": [
+            "E4",
+            "E6"
+          ],
+          "measured": [
+            {
+              "id": "E4",
+              "kind": "small_tap_target",
+              "page": "/order",
+              "detail": "2 target(s) under 24px: 'One fewer' (16x16px), 'One more' (16x16px)"
+            },
+            {
+              "id": "E6",
+              "kind": "small_tap_target",
+              "page": "/thanks",
+              "detail": "1 target(s) under 24px: 'Back to the breads' (130x19px)"
+            }
+          ]
+        }
+      ],
+      "whispers": [],
+      "also_measured": [],
+      "raw_complaints": [
+        {
+          "kind": "slow_load",
+          "text": "The page took too long to load. Three seconds is too much time for bread.",
+          "evidence": [
+            "E1"
+          ]
+        },
+        {
+          "kind": "horizontal_scroll",
+          "text": "The page is way too wide for my phone. I kept scrolling sideways.",
+          "evidence": [
+            "E2",
+            "E3",
+            "E5"
+          ]
+        },
+        {
+          "kind": "small_tap_target",
+          "text": "The buttons are tiny. I couldn't hit 'One more' or 'Back to the breads'.",
+          "evidence": [
+            "E4",
+            "E6"
+          ]
+        }
+      ],
+      "raw_report": {
+        "verdict": "It worked. But seriously, this site is too wide. I almost gave up just scrolling. So annoying.",
+        "epitaph": "Here lies Marisol, who died trying to click a button smaller than her thumb.",
+        "complaints": [
+          {
+            "kind": "slow_load",
+            "text": "The page took too long to load. Three seconds is too much time for bread.",
+            "evidence": [
+              "E1"
+            ]
+          },
+          {
+            "kind": "horizontal_scroll",
+            "text": "The page is way too wide for my phone. I kept scrolling sideways.",
+            "evidence": [
+              "E2",
+              "E3",
+              "E5"
+            ]
+          },
+          {
+            "kind": "small_tap_target",
+            "text": "The buttons are tiny. I couldn't hit 'One more' or 'Back to the breads'.",
+            "evidence": [
+              "E4",
+              "E6"
+            ]
+          }
+        ]
+      },
+      "verdict": "It worked. But seriously, this site is too wide. I almost gave up just scrolling. So annoying.",
+      "epitaph": "Here lies Marisol, who died trying to click a button smaller than her thumb.",
+      "final_screenshot": "marisol-final.png",
+      "seconds": 182.6,
+      "error": "",
+      "persona": "Ordered everything on the bus, one bar of signal at a time."
+    },
+    {
+      "ghost": "tomas",
+      "name": "Tomás",
+      "url": "http://127.0.0.1:49364/",
+      "goal": "Order some bread for the Day of the Dead, as you would in real life.",
+      "outcome": "ran_out_of_steps",
+      "reason": "still wandering after 16 steps",
+      "final_page": "/order",
+      "steps": [
+        {
+          "n": 1,
+          "page": "/",
+          "thought": "The screen reader announced the page title and several links, including 'Breads' and 'Order'. I will tab to see the options.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-01.png"
+        },
+        {
+          "n": 2,
+          "page": "/",
+          "thought": "The screen reader announced 'link Breads'. I will tab to the next link, 'Order'.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-02.png"
+        },
+        {
+          "n": 3,
+          "page": "/",
+          "thought": "The screen reader announced 'Order' is focused, time to click it.",
+          "fright": 1,
+          "action": {
+            "action": "enter"
+          },
+          "result": "pressed Enter; now on /order",
+          "screenshot": "tomas-03.png"
+        },
+        {
+          "n": 4,
+          "page": "/order",
+          "thought": "I need to select a type of bread first.",
+          "fright": 2,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-04.png"
+        },
+        {
+          "n": 5,
+          "page": "/order",
+          "thought": "The focus is on 'Breads', I will tab to see the options.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-05.png"
+        },
+        {
+          "n": 6,
+          "page": "/order",
+          "thought": "I will select the Pan de muerto bread first.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-06.png"
+        },
+        {
+          "n": 7,
+          "page": "/order",
+          "thought": "The focus is on the bread selection, I will choose the Pan de muerto.",
+          "fright": 1,
+          "action": {
+            "action": "type",
+            "text": "Pan de muerto ($6)"
+          },
+          "result": "typed 'Pan de muerto ($6)'",
+          "screenshot": "tomas-07.png"
+        },
+        {
+          "n": 8,
+          "page": "/order",
+          "thought": "The bread is selected, now I need to adjust the quantity.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-08.png"
+        },
+        {
+          "n": 9,
+          "page": "/order",
+          "thought": "Focus is on the name field, I will type my name.",
+          "fright": 1,
+          "action": {
+            "action": "type",
+            "text": "Tomás"
+          },
+          "result": "typed 'Tomás'",
+          "screenshot": "tomas-09.png"
+        },
+        {
+          "n": 10,
+          "page": "/order",
+          "thought": "The focus is on 'Your name', I need to move to the quantity selector.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-10.png"
+        },
+        {
+          "n": 11,
+          "page": "/order",
+          "thought": "The focus is on an unnamed field, I need to adjust the quantity of bread.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-11.png"
+        },
+        {
+          "n": 12,
+          "page": "/order",
+          "thought": "The focus is on the pickup day, I will select November 2.",
+          "fright": 1,
+          "action": {
+            "action": "type",
+            "text": "November 2"
+          },
+          "result": "typed 'November 2'",
+          "screenshot": "tomas-12.png"
+        },
+        {
+          "n": 13,
+          "page": "/order",
+          "thought": "The focus is on the pickup day, but I need to adjust the quantity to order the bread.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-13.png"
+        },
+        {
+          "n": 14,
+          "page": "/order",
+          "thought": "I need to adjust the quantity of bread.",
+          "fright": 1,
+          "action": {
+            "action": "space"
+          },
+          "result": "pressed Space",
+          "screenshot": "tomas-14.png"
+        },
+        {
+          "n": 15,
+          "page": "/order",
+          "thought": "I need to increase the quantity to order bread.",
+          "fright": 1,
+          "action": {
+            "action": "space"
+          },
+          "result": "pressed Space",
+          "screenshot": "tomas-15.png"
+        },
+        {
+          "n": 16,
+          "page": "/order",
+          "thought": "I need to select a type of bread first.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab",
+          "screenshot": "tomas-16.png"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "E1",
+          "kind": "unnamed_control",
+          "page": "/order",
+          "detail": "1 control(s) with no accessible name: textbox (placeholder 'Email')"
+        },
+        {
+          "id": "E2",
+          "kind": "not_keyboard_reachable",
+          "page": "/order",
+          "detail": "1 clickable element(s) Tab can't reach: 'Place order'"
+        },
+        {
+          "id": "E3",
+          "kind": "goal_not_completed",
+          "page": "/order",
+          "detail": "left after 16 step(s) on /order: still wandering after 16 steps"
+        }
+      ],
+      "hauntings": [
+        {
+          "kind": "unnamed_control",
+          "text": "Upon arriving at the order page, the screen reader announced a textbox with no accessible name. It is terribly rude to be presented with an empty field.",
+          "evidence": [
+            "E1"
+          ],
+          "measured": [
+            {
+              "id": "E1",
+              "kind": "unnamed_control",
+              "page": "/order",
+              "detail": "1 control(s) with no accessible name: textbox (placeholder 'Email')"
+            }
+          ]
+        },
+        {
+          "kind": "not_keyboard_reachable",
+          "text": "I found myself unable to reach the 'Place order' button using the Tab key. A clickable element that refuses to acknowledge the keyboard is simply unacceptable.",
+          "evidence": [
+            "E2"
+          ],
+          "measured": [
+            {
+              "id": "E2",
+              "kind": "not_keyboard_reachable",
+              "page": "/order",
+              "detail": "1 clickable element(s) Tab can't reach: 'Place order'"
+            }
+          ]
+        },
+        {
+          "kind": "goal_not_completed",
+          "text": "After sixteen steps, I was still wandering aimlessly. The journey to ordering bread was far too meandering for a ghost.",
+          "evidence": [
+            "E3"
+          ],
+          "measured": [
+            {
+              "id": "E3",
+              "kind": "goal_not_completed",
+              "page": "/order",
+              "detail": "left after 16 step(s) on /order: still wandering after 16 steps"
+            }
+          ]
+        }
+      ],
+      "whispers": [],
+      "also_measured": [],
+      "raw_complaints": [
+        {
+          "kind": "unnamed_control",
+          "text": "Upon arriving at the order page, the screen reader announced a textbox with no accessible name. It is terribly rude to be presented with an empty field.",
+          "evidence": [
+            "E1"
+          ]
+        },
+        {
+          "kind": "not_keyboard_reachable",
+          "text": "I found myself unable to reach the 'Place order' button using the Tab key. A clickable element that refuses to acknowledge the keyboard is simply unacceptable.",
+          "evidence": [
+            "E2"
+          ]
+        },
+        {
+          "kind": "goal_not_completed",
+          "text": "After sixteen steps, I was still wandering aimlessly. The journey to ordering bread was far too meandering for a ghost.",
+          "evidence": [
+            "E3"
+          ]
+        }
+      ],
+      "raw_report": {
+        "verdict": "The attempt to procure Pan de muerto proved frustratingly circular; I managed to navigate the initial steps but ultimately got lost in the labyrinth of unnamed fields and unreachable buttons.",
+        "epitaph": "Here lies Tomás, who ordered bread but never found the 'Place Order' button.",
+        "complaints": [
+          {
+            "kind": "unnamed_control",
+            "text": "Upon arriving at the order page, the screen reader announced a textbox with no accessible name. It is terribly rude to be presented with an empty field.",
+            "evidence": [
+              "E1"
+            ]
+          },
+          {
+            "kind": "not_keyboard_reachable",
+            "text": "I found myself unable to reach the 'Place order' button using the Tab key. A clickable element that refuses to acknowledge the keyboard is simply unacceptable.",
+            "evidence": [
+              "E2"
+            ]
+          },
+          {
+            "kind": "goal_not_completed",
+            "text": "After sixteen steps, I was still wandering aimlessly. The journey to ordering bread was far too meandering for a ghost.",
+            "evidence": [
+              "E3"
+            ]
+          }
+        ]
+      },
+      "verdict": "The attempt to procure Pan de muerto proved frustratingly circular; I managed to navigate the initial steps but ultimately got lost in the labyrinth of unnamed fields and unreachable buttons.",
+      "epitaph": "Here lies Tomás, who ordered bread but never found the 'Place Order' button.",
+      "final_screenshot": "tomas-final.png",
+      "seconds": 410.2,
+      "error": "",
+      "persona": "Read the whole web by ear, and never once saw a button."
+    },
+    {
+      "ghost": "rosa",
+      "name": "Abuela Rosa",
+      "url": "http://127.0.0.1:49364/",
+      "goal": "Order some bread for the Day of the Dead, as you would in real life.",
+      "outcome": "succeeded",
+      "reason": "Order confirmed on thank you page",
+      "final_page": "/thanks",
+      "steps": [
+        {
+          "n": 1,
+          "page": "/",
+          "thought": "Ah, bread for the ofrenda. I will click on the Pan de muerto option first.",
+          "fright": 1,
+          "action": {
+            "action": "click",
+            "target": 3
+          },
+          "result": "tapped [3] 'Order Pan de muerto'; now on /order",
+          "screenshot": "rosa-01.png"
+        },
+        {
+          "n": 2,
+          "page": "/order",
+          "thought": "Ah, Pan de muerto, that is what I need for the ofrenda.",
+          "fright": 2,
+          "action": {
+            "action": "select",
+            "target": 3,
+            "text": "Pan de muerto ($6)"
+          },
+          "result": "chose 'Pan de muerto ($6)' in [3] 'Bread'",
+          "screenshot": "rosa-02.png"
+        },
+        {
+          "n": 3,
+          "page": "/order",
+          "thought": "Now I must tell them how many loaves I need for my family's ofrenda.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 9
+          },
+          "result": "tapped [9] 'One more'",
+          "screenshot": "rosa-03.png"
+        },
+        {
+          "n": 4,
+          "page": "/order",
+          "thought": "Now I must tell them how much bread I need for my family's ofrenda.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 10
+          },
+          "result": "tapped [10] 'Place order'; the form was not sent, the browser points at [4]: 'Please fill out this field.'",
+          "screenshot": "rosa-04.png"
+        },
+        {
+          "n": 5,
+          "page": "/order",
+          "thought": "Oh dear, the page is asking for my name. I must type it in.",
+          "fright": 2,
+          "action": {
+            "action": "fill",
+            "target": 4,
+            "text": "Rosa"
+          },
+          "result": "typed 'Rosa' into [4] 'Your name'",
+          "screenshot": "rosa-05.png"
+        },
+        {
+          "n": 6,
+          "page": "/order",
+          "thought": "Now I must choose a pickup day and then place the order for the bread.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 6
+          },
+          "result": "tapped [6] 'Pickup day'",
+          "screenshot": "rosa-06.png"
+        },
+        {
+          "n": 7,
+          "page": "/order",
+          "thought": "Now I must choose a pickup day and then place the order.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 10
+          },
+          "result": "tapped [10] 'Place order'; the form was not sent, the browser points at [5]: 'Please fill out this field.'",
+          "screenshot": "rosa-07.png"
+        },
+        {
+          "n": 8,
+          "page": "/order",
+          "thought": "I must fill in my email address before I can place the order.",
+          "fright": 2,
+          "action": {
+            "text": "rosarosa@example.com",
+            "target": 5,
+            "action": "fill"
+          },
+          "result": "typed 'rosarosa@example.com' into [5] 'textbox'",
+          "screenshot": "rosa-08.png"
+        },
+        {
+          "n": 9,
+          "page": "/order",
+          "thought": "I will select the Pan de muerto bread first.",
+          "fright": 2,
+          "action": {
+            "action": "select",
+            "target": 3,
+            "text": "Pan de muerto ($6)"
+          },
+          "result": "chose 'Pan de muerto ($6)' in [3] 'Bread'",
+          "screenshot": "rosa-09.png"
+        },
+        {
+          "n": 10,
+          "page": "/order",
+          "thought": "Now I must click 'Place order' to finalize my bread order.",
+          "fright": 2,
+          "action": {
+            "action": "click",
+            "target": 10
+          },
+          "result": "tapped [10] 'Place order'; now on /thanks",
+          "screenshot": "rosa-10.png"
+        },
+        {
+          "n": 11,
+          "page": "/thanks",
+          "thought": "The page confirms my order, which is what I needed for the ofrenda.",
+          "fright": 1,
+          "action": {
+            "action": "done",
+            "outcome": "succeeded",
+            "reason": "Order confirmed on thank you page"
+          },
+          "result": "left the site",
+          "screenshot": "rosa-11.png"
+        }
+      ],
+      "evidence": [
+        {
+          "id": "E1",
+          "kind": "small_text",
+          "page": "/",
+          "detail": "7 text block(s) under 12px, e.g. 'Every year we bake for the families who set a place for the ' at 11px"
+        },
+        {
+          "id": "E2",
+          "kind": "low_contrast",
+          "page": "/",
+          "detail": "7 text block(s) below 4.5:1 contrast, worst 'Every year we bake for the families who set a place for the ' at 2.42:1"
+        },
+        {
+          "id": "E3",
+          "kind": "small_text",
+          "page": "/order",
+          "detail": "1 text block(s) under 12px, e.g. 'Tell us what to bake and when you'll come by.' at 11px"
+        },
+        {
+          "id": "E4",
+          "kind": "low_contrast",
+          "page": "/order",
+          "detail": "1 text block(s) below 4.5:1 contrast, worst 'Tell us what to bake and when you'll come by.' at 2.42:1"
+        },
+        {
+          "id": "E5",
+          "kind": "small_text",
+          "page": "/thanks",
+          "detail": "1 text block(s) under 12px, e.g. 'We'll have 2 × Pan de muerto ready on November 1. A confirma' at 11px"
+        },
+        {
+          "id": "E6",
+          "kind": "low_contrast",
+          "page": "/thanks",
+          "detail": "1 text block(s) below 4.5:1 contrast, worst 'We'll have 2 × Pan de muerto ready on November 1. A confirma' at 2.42:1"
+        }
+      ],
+      "hauntings": [
+        {
+          "kind": "small_text",
+          "text": "The text on the pages is so small, like tiny little specks. My eyes just cannot make out the details when I am trying to read the instructions.",
+          "evidence": [
+            "E1",
+            "E3",
+            "E5"
+          ],
+          "measured": [
+            {
+              "id": "E1",
+              "kind": "small_text",
+              "page": "/",
+              "detail": "7 text block(s) under 12px, e.g. 'Every year we bake for the families who set a place for the ' at 11px"
+            },
+            {
+              "id": "E3",
+              "kind": "small_text",
+              "page": "/order",
+              "detail": "1 text block(s) under 12px, e.g. 'Tell us what to bake and when you'll come by.' at 11px"
+            },
+            {
+              "id": "E5",
+              "kind": "small_text",
+              "page": "/thanks",
+              "detail": "1 text block(s) under 12px, e.g. 'We'll have 2 × Pan de muerto ready on November 1. A confirma' at 11px"
+            }
+          ]
+        },
+        {
+          "kind": "low_contrast",
+          "text": "The contrast is terrible! The grey text is almost invisible against the screen. It makes my head spin and I get so weary so fast.",
+          "evidence": [
+            "E2",
+            "E4",
+            "E6"
+          ],
+          "measured": [
+            {
+              "id": "E2",
+              "kind": "low_contrast",
+              "page": "/",
+              "detail": "7 text block(s) below 4.5:1 contrast, worst 'Every year we bake for the families who set a place for the ' at 2.42:1"
+            },
+            {
+              "id": "E4",
+              "kind": "low_contrast",
+              "page": "/order",
+              "detail": "1 text block(s) below 4.5:1 contrast, worst 'Tell us what to bake and when you'll come by.' at 2.42:1"
+            },
+            {
+              "id": "E6",
+              "kind": "low_contrast",
+              "page": "/thanks",
+              "detail": "1 text block(s) below 4.5:1 contrast, worst 'We'll have 2 × Pan de muerto ready on November 1. A confirma' at 2.42:1"
+            }
+          ]
+        }
+      ],
+      "whispers": [],
+      "also_measured": [],
+      "raw_complaints": [
+        {
+          "kind": "small_text",
+          "text": "The text on the pages is so small, like tiny little specks. My eyes just cannot make out the details when I am trying to read the instructions.",
+          "evidence": [
+            "E1",
+            "E3",
+            "E5"
+          ]
+        },
+        {
+          "kind": "low_contrast",
+          "text": "The contrast is terrible! The grey text is almost invisible against the screen. It makes my head spin and I get so weary so fast.",
+          "evidence": [
+            "E2",
+            "E4",
+            "E6"
+          ]
+        }
+      ],
+      "raw_report": {
+        "verdict": "Oh, my goodness, it took so much patience to find the right bread for the ofrenda. The little words are so faint, and my eyes grow so tired so quickly when the contrast is so poor.",
+        "epitaph": "Here lies Rosa, who ordered bread but couldn't read the tiny print.",
+        "complaints": [
+          {
+            "kind": "small_text",
+            "text": "The text on the pages is so small, like tiny little specks. My eyes just cannot make out the details when I am trying to read the instructions.",
+            "evidence": [
+              "E1",
+              "E3",
+              "E5"
+            ]
+          },
+          {
+            "kind": "low_contrast",
+            "text": "The contrast is terrible! The grey text is almost invisible against the screen. It makes my head spin and I get so weary so fast.",
+            "evidence": [
+              "E2",
+              "E4",
+              "E6"
+            ]
+          }
+        ]
+      },
+      "verdict": "Oh, my goodness, it took so much patience to find the right bread for the ofrenda. The little words are so faint, and my eyes grow so tired so quickly when the contrast is so poor.",
+      "epitaph": "Here lies Rosa, who ordered bread but couldn't read the tiny print.",
+      "final_screenshot": "rosa-final.png",
+      "seconds": 249.6,
+      "error": "",
+      "persona": "Set the ofrenda every November, reading glasses on, browser zoomed to 200%."
+    }
+  ]
+}
