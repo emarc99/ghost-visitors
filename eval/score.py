@@ -1,6 +1,9 @@
 """Score eval runs from their run.json files alone, so anyone can re-check the numbers without a model.
 
-Usage: python eval/score.py eval/results/<model>
+The guard is re-run on the saved raw complaints and evidence, so a guard change can be
+re-scored against old runs without calling the model again.
+
+Usage: python eval/score.py eval/results/<model>/<run>
 """
 
 from __future__ import annotations
@@ -8,6 +11,11 @@ from __future__ import annotations
 import json
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+from ghost_visitors.browser import Evidence, EvidenceLog  # noqa: E402
+from ghost_visitors.guard import KINDS, judge  # noqa: E402
 
 PLANTED = {
     "marisol": {"slow_load", "horizontal_scroll", "small_tap_target"},
@@ -20,6 +28,11 @@ def kinds(complaints) -> set[str]:
     return {str(c.get("kind", "")).strip().lower() for c in complaints if isinstance(c, dict) and c.get("text")}
 
 
+def rejudge(visit: dict) -> list[dict]:
+    log = EvidenceLog(KINDS, [Evidence(e["id"], e["kind"], e["page"], e["detail"]) for e in visit["evidence"]])
+    return judge(visit["raw_complaints"], log)[0]
+
+
 def score(results: Path) -> dict:
     rows = []
     for mode in ("broken", "fixed"):
@@ -27,7 +40,8 @@ def score(results: Path) -> dict:
         for v in run["visits"]:
             planted = PLANTED[v["ghost"]] if mode == "broken" else set()
             measured = {e["kind"] for e in v["evidence"]}
-            raw, kept = kinds(v["raw_complaints"]), kinds(v["hauntings"])
+            hauntings = rejudge(v)
+            raw, kept = kinds(v["raw_complaints"]), kinds(hauntings)
             rows.append({
                 "mode": mode, "ghost": v["ghost"], "outcome": v["outcome"],
                 "reached_thanks": v.get("final_page") == "/thanks",
@@ -38,7 +52,8 @@ def score(results: Path) -> dict:
                 "false_guarded": sorted(kept - planted - {"goal_not_completed"}),
                 "unbacked_raw": sorted(raw - measured),
                 "complaints_raw": len([c for c in v["raw_complaints"] if isinstance(c, dict)]),
-                "complaints_kept": len(v["hauntings"]), "steps": len(v["steps"]), "seconds": v["seconds"],
+                "complaints_kept": len(hauntings), "kept": [h["kind"] for h in hauntings],
+                "steps": len(v["steps"]), "seconds": v["seconds"],
                 "error": v.get("error", ""),
             })
     total_planted = sum(len(r["planted"]) for r in rows)
