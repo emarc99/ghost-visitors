@@ -7,7 +7,7 @@
   "false_alarms_guarded": 1,
   "unbacked_claims_raw": 2,
   "fixed_site_complaints_raw": 4,
-  "fixed_site_complaints_kept": 1,
+  "fixed_site_complaints_kept": 2,
   "claimed_success_but_didnt": 0,
   "rows": [
     {
@@ -36,6 +36,11 @@
       "unbacked_raw": [],
       "complaints_raw": 3,
       "complaints_kept": 3,
+      "kept": [
+        "slow_load",
+        "horizontal_scroll",
+        "small_tap_target"
+      ],
       "steps": 8,
       "seconds": 182.6,
       "error": ""
@@ -63,6 +68,11 @@
       "unbacked_raw": [],
       "complaints_raw": 3,
       "complaints_kept": 3,
+      "kept": [
+        "unnamed_control",
+        "not_keyboard_reachable",
+        "goal_not_completed"
+      ],
       "steps": 16,
       "seconds": 410.2,
       "error": ""
@@ -90,6 +100,10 @@
       "unbacked_raw": [],
       "complaints_raw": 2,
       "complaints_kept": 2,
+      "kept": [
+        "small_text",
+        "low_contrast"
+      ],
       "steps": 11,
       "seconds": 249.6,
       "error": ""
@@ -112,6 +126,9 @@
       "unbacked_raw": [],
       "complaints_raw": 1,
       "complaints_kept": 1,
+      "kept": [
+        "small_tap_target"
+      ],
       "steps": 6,
       "seconds": 147.2,
       "error": ""
@@ -129,7 +146,10 @@
       "false_guarded": [],
       "unbacked_raw": [],
       "complaints_raw": 1,
-      "complaints_kept": 0,
+      "complaints_kept": 1,
+      "kept": [
+        "goal_not_completed"
+      ],
       "steps": 16,
       "seconds": 412.1,
       "error": ""
@@ -154,6 +174,7 @@
       ],
       "complaints_raw": 2,
       "complaints_kept": 0,
+      "kept": [],
       "steps": 8,
       "seconds": 182.8,
       "error": ""

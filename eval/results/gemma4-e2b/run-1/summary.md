@@ -5,7 +5,7 @@
 | Planted problems found (of 7) | 7 | 7 |
 | False alarms (kinds not planted) | 3 | 1 |
 | Claims with no matching measurement | 2 | 0 by construction |
-| Complaints about the fixed site | 4 | 1 |
+| Complaints about the fixed site | 4 | 2 |
 
 Ghosts that said they succeeded but never reached the confirmation page: 0
 
