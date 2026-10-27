@@ -1,7 +1,7 @@
 """Send every ghost to the broken and the fixed Marigold Bakery, keep the raw runs, and score them.
 
-Usage: python eval/run_eval.py [--model gemma4:e2b] [--max-steps 12]
-Raw runs (run.json per site) land in eval/results/<model>/, screenshots in reports/eval/.
+Usage: python eval/run_eval.py --label run-2 [--model gemma4:e2b] [--max-steps 12]
+Raw runs (run.json per site) land in eval/results/<model>/<label>/, screenshots in reports/eval/.
 """
 
 from __future__ import annotations
@@ -34,6 +34,7 @@ def main() -> int:
     parser.add_argument("--model")
     parser.add_argument("--base-url")
     parser.add_argument("--max-steps", type=int, default=12)
+    parser.add_argument("--label", required=True, help="folder name for this run, e.g. run-2")
     args = parser.parse_args()
     llm = LLM()
     llm.model = args.model or llm.model
@@ -43,7 +44,7 @@ def main() -> int:
         print(problem, file=sys.stderr)
         return 2
 
-    results = ROOT / "eval" / "results" / llm.model.replace(":", "-").replace("/", "-")
+    results = ROOT / "eval" / "results" / llm.model.replace(":", "-").replace("/", "-") / args.label
     for mode in ("broken", "fixed"):
         server = make_server("127.0.0.1", 0, create_app(mode), threaded=True)
         threading.Thread(target=server.serve_forever, daemon=True).start()
