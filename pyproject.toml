@@ -1,0 +1,23 @@
+[project]
+name = "ghost-visitors"
+version = "0.1.0"
+description = "Persona ghosts, driven by a local open-weight model, haunt your website and report what scared them."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+  "playwright==1.49.1",
+  "flask>=3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+ghost-visitors = "ghost_visitors.cli:main"
+
+[tool.setuptools]
+packages = ["ghost_visitors", "demo_site"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
