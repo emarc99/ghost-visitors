@@ -54,6 +54,7 @@ def test_keyboard_ghost_blocked_by_clickable_div(browser, bakery, tmp_path):
     assert [e["kind"] for e in visit.also_measured] == ["unnamed_control", "goal_not_completed"]
     assert (tmp_path / "tomas-01.png").exists() and (tmp_path / visit.final_screenshot).exists()
     assert "Focus is on" in llm.prompts[0]
+    assert llm.prompts[0].startswith("Step 1 of 24.")
 
 
 def test_pointer_ghost_completes_fixed_order(browser, bakery, tmp_path):

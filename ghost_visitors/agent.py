@@ -25,6 +25,9 @@ POINTER_ACTIONS = """Actions:
 - {"action": "back"}
 - {"action": "done", "outcome": "succeeded" or "gave_up", "reason": "<why, in a few words>"}"""
 
+# Every Tab is a step, so moving through a form by keyboard takes about twice the steps of tapping fields.
+KEYBOARD_STEP_FACTOR = 2
+
 KEYBOARD_ACTIONS = """Actions (keyboard only, like a real screen reader user):
 - {"action": "tab"}        move focus to the next control
 - {"action": "shift_tab"}  move focus to the previous control
@@ -166,6 +169,8 @@ def describe_action(action: dict) -> str:
 def haunt(browser: Browser, ghost: Ghost, url: str, llm: LLM, out_dir: Path,
           goal: str = DEFAULT_GOAL, max_steps: int = 12, on_step=None) -> Visit:
     visit = Visit(ghost=ghost.id, name=ghost.name, url=url, goal=goal)
+    if ghost.keyboard_only:
+        max_steps *= KEYBOARD_STEP_FACTOR
     started = time.monotonic()
     body = Body(browser, ghost)
     system = system_prompt(ghost, url, goal)
