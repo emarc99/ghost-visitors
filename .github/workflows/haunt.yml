@@ -1,0 +1,74 @@
+name: Haunt
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: python -m playwright install --with-deps chromium
+      - run: pytest -q
+
+  haunt:
+    # Gemma runs on the runner's CPU: no API key, no secret, nothing billed per run.
+    name: Haunt the ${{ matrix.mode }} bakery
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: broken
+            expect: 3   # proven hauntings
+          - mode: fixed
+            expect: 0   # rests in peace
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e .
+      - run: python -m playwright install --with-deps chromium
+
+      - name: Install Ollama and pull Gemma 4 E2B
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          for i in $(seq 30); do curl -sf http://127.0.0.1:11434/api/version && break; sleep 1; done
+          ollama pull gemma4:e2b
+
+      - name: Serve the ${{ matrix.mode }} bakery
+        run: |
+          ghost-visitors bakery --mode ${{ matrix.mode }} --port 8001 > bakery.log 2>&1 &
+          for i in $(seq 30); do curl -sf http://127.0.0.1:8001/ > /dev/null && break; sleep 1; done
+
+      - name: Send Abuela Rosa
+        run: |
+          set +e
+          ghost-visitors haunt http://127.0.0.1:8001 --ghosts rosa --max-steps 12 \
+            --goal "Order some bread for the Day of the Dead, as you would in real life." \
+            --fail-on-haunting --summary "$GITHUB_STEP_SUMMARY"
+          code=$?
+          echo "exit code $code, expected ${{ matrix.expect }}"
+          test "$code" = "${{ matrix.expect }}"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: haunting-report-${{ matrix.mode }}
+          path: reports/
