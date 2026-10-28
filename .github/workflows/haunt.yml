@@ -3,11 +3,16 @@ name: Haunt
 on:
   push:
     branches: [main]
+    paths-ignore: ["**.md", "docs/**", "eval/results/**"]
   pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
+
+concurrency:
+  group: haunt-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
