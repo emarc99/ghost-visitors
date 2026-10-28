@@ -35,6 +35,7 @@ def main() -> int:
     parser.add_argument("--base-url")
     parser.add_argument("--max-steps", type=int, default=12)
     parser.add_argument("--label", required=True, help="folder name for this run, e.g. run-2")
+    parser.add_argument("--ghosts", help="comma-separated ghost ids (default: all)")
     args = parser.parse_args()
     llm = LLM()
     llm.model = args.model or llm.model
@@ -50,7 +51,7 @@ def main() -> int:
         threading.Thread(target=server.serve_forever, daemon=True).start()
         print(f"\n=== {mode} bakery ===")
         try:
-            run_dir = run_haunting(f"http://127.0.0.1:{server.server_port}/", pick(None), llm,
+            run_dir = run_haunting(f"http://127.0.0.1:{server.server_port}/", pick(args.ghosts.split(",") if args.ghosts else None), llm,
                                    out_root=ROOT / "reports" / "eval", goal=GOAL, max_steps=args.max_steps,
                                    on_event=print_progress)
         finally:
