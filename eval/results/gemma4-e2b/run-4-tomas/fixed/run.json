@@ -1,0 +1,191 @@
+{
+  "url": "http://127.0.0.1:59304/",
+  "goal": "Order some bread for the Day of the Dead, as you would in real life.",
+  "model": "gemma4:e2b",
+  "base_url": "http://localhost:11434/v1",
+  "started": "2026-10-28 02:05",
+  "seconds": 262.5,
+  "usage": {
+    "calls": 47,
+    "prompt_tokens": 39087,
+    "completion_tokens": 9505,
+    "seconds": 977.8
+  },
+  "visits": [
+    {
+      "ghost": "tomas",
+      "name": "Tomás",
+      "url": "http://127.0.0.1:59304/",
+      "goal": "Order some bread for the Day of the Dead, as you would in real life.",
+      "outcome": "succeeded",
+      "reason": "Order confirmed on thank you page",
+      "final_page": "/thanks",
+      "steps": [
+        {
+          "n": 1,
+          "page": "/",
+          "thought": "The screen reader announced the page title and then the first link, 'Breads'.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab; focus is on [1] link \"Breads\"",
+          "screenshot": "tomas-01.png"
+        },
+        {
+          "n": 2,
+          "page": "/",
+          "thought": "The screen reader announced the 'Breads' link, now I will try to find the order button.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab; focus is on [2] link \"Order\"",
+          "screenshot": "tomas-02.png"
+        },
+        {
+          "n": 3,
+          "page": "/",
+          "thought": "The screen reader announced 'Order', so I will activate it.",
+          "fright": 1,
+          "action": {
+            "action": "enter"
+          },
+          "result": "pressed Enter; now on /order",
+          "screenshot": "tomas-03.png"
+        },
+        {
+          "n": 4,
+          "page": "/order",
+          "thought": "I need to select a bread to order.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab; focus is on [1] link \"Breads\"",
+          "screenshot": "tomas-04.png"
+        },
+        {
+          "n": 5,
+          "page": "/order",
+          "thought": "I need to select a type of bread to order.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab; focus is on [2] link \"Order\"",
+          "screenshot": "tomas-05.png"
+        },
+        {
+          "n": 6,
+          "page": "/order",
+          "thought": "I need to select a bread item first.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab; focus is on [3] combobox \"Bread\"",
+          "screenshot": "tomas-06.png"
+        },
+        {
+          "n": 7,
+          "page": "/order",
+          "thought": "The bread selection is open, I will choose the Pan de muerto.",
+          "fright": 1,
+          "action": {
+            "action": "type",
+            "text": "Pan de muerto ($6)"
+          },
+          "result": "typed 'Pan de muerto ($6)' into [3] 'Bread'",
+          "screenshot": "tomas-07.png"
+        },
+        {
+          "n": 8,
+          "page": "/order",
+          "thought": "The bread is selected, now I must input my name.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab; focus is on [4] textbox \"Your name\"",
+          "screenshot": "tomas-08.png"
+        },
+        {
+          "n": 9,
+          "page": "/order",
+          "thought": "Now I need to input my name into the textbox.",
+          "fright": 1,
+          "action": {
+            "action": "type",
+            "text": "Tomás"
+          },
+          "result": "typed 'Tomás' into [4] 'Your name'",
+          "screenshot": "tomas-09.png"
+        },
+        {
+          "n": 10,
+          "page": "/order",
+          "thought": "I must enter an email address before placing the order.",
+          "fright": 1,
+          "action": {
+            "action": "tab"
+          },
+          "result": "pressed Tab; focus is on [5] textbox \"Email\"",
+          "screenshot": "tomas-10.png"
+        },
+        {
+          "n": 11,
+          "page": "/order",
+          "thought": "The screen reader is focused on the Email field; I will input an email and then submit the order.",
+          "fright": 1,
+          "action": {
+            "action": "type",
+            "text": "tomas@example.com"
+          },
+          "result": "typed 'tomas@example.com' into [5] 'Email'",
+          "screenshot": "tomas-11.png"
+        },
+        {
+          "n": 12,
+          "page": "/order",
+          "thought": "The email is filled, now I must press the place order button.",
+          "fright": 1,
+          "action": {
+            "action": "enter"
+          },
+          "result": "pressed Enter; now on /thanks",
+          "screenshot": "tomas-12.png"
+        },
+        {
+          "n": 13,
+          "page": "/thanks",
+          "thought": "The page confirms the order, so I have succeeded.",
+          "fright": 0,
+          "action": {
+            "action": "done",
+            "outcome": "succeeded",
+            "reason": "Order confirmed on thank you page"
+          },
+          "result": "left the site",
+          "screenshot": "tomas-13.png"
+        }
+      ],
+      "evidence": [],
+      "hauntings": [],
+      "whispers": [],
+      "also_measured": [],
+      "raw_complaints": [],
+      "raw_report": {
+        "verdict": "The transaction was executed with admirable precision. The path from browsing bread to confirming the order was perfectly navigable, as expected.",
+        "epitaph": "Here lies Tomás, who successfully ordered his Pan de muerto, proving that even ghosts can master the digital checkout.",
+        "complaints": []
+      },
+      "verdict": "The transaction was executed with admirable precision. The path from browsing bread to confirming the order was perfectly navigable, as expected.",
+      "epitaph": "Here lies Tomás, who successfully ordered his Pan de muerto, proving that even ghosts can master the digital checkout.",
+      "final_screenshot": "tomas-final.png",
+      "seconds": 261.9,
+      "error": "",
+      "persona": "Read the whole web by ear, and never once saw a button."
+    }
+  ]
+}

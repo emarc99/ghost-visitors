@@ -1,0 +1,65 @@
+{
+  "model": "gemma4:e2b",
+  "planted": 2,
+  "found_raw": 2,
+  "found_guarded": 2,
+  "false_alarms_raw": 0,
+  "false_alarms_guarded": 0,
+  "unbacked_claims_raw": 0,
+  "fixed_site_complaints_raw": 0,
+  "fixed_site_complaints_kept": 0,
+  "claimed_success_but_didnt": 0,
+  "rows": [
+    {
+      "mode": "broken",
+      "ghost": "tomas",
+      "outcome": "ran_out_of_steps",
+      "reached_thanks": false,
+      "claimed_success": false,
+      "planted": [
+        "not_keyboard_reachable",
+        "unnamed_control"
+      ],
+      "found_raw": [
+        "not_keyboard_reachable",
+        "unnamed_control"
+      ],
+      "found_guarded": [
+        "not_keyboard_reachable",
+        "unnamed_control"
+      ],
+      "false_raw": [],
+      "false_guarded": [],
+      "unbacked_raw": [],
+      "complaints_raw": 3,
+      "complaints_kept": 3,
+      "kept": [
+        "unnamed_control",
+        "not_keyboard_reachable",
+        "goal_not_completed"
+      ],
+      "steps": 32,
+      "seconds": 736.0,
+      "error": ""
+    },
+    {
+      "mode": "fixed",
+      "ghost": "tomas",
+      "outcome": "succeeded",
+      "reached_thanks": true,
+      "claimed_success": true,
+      "planted": [],
+      "found_raw": [],
+      "found_guarded": [],
+      "false_raw": [],
+      "false_guarded": [],
+      "unbacked_raw": [],
+      "complaints_raw": 0,
+      "complaints_kept": 0,
+      "kept": [],
+      "steps": 13,
+      "seconds": 261.9,
+      "error": ""
+    }
+  ]
+}
