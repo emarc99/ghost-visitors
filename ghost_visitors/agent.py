@@ -32,7 +32,8 @@ KEYBOARD_ACTIONS = """Actions (keyboard only, like a real screen reader user):
 - {"action": "enter"}      activate the focused link or button, or submit the form
 - {"action": "space"}      press the focused button or checkbox
 - {"action": "done", "outcome": "succeeded" or "gave_up", "reason": "<why, in a few words>"}
-To fill a field: Tab until "Focus is on" shows that field's number, then type."""
+To fill a field: Tab until "Focus is on" shows that field's number, then type.
+Enter activates exactly what "Focus is on" names right now, not the control you are heading for."""
 
 
 ACTION_NAMES = ("click", "fill", "select", "scroll", "back", "tab", "shift_tab", "type", "enter", "space", "done")
