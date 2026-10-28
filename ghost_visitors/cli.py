@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import webbrowser
 from pathlib import Path
@@ -10,6 +11,7 @@ from pathlib import Path
 from .agent import DEFAULT_GOAL
 from .llm import LLM, LLMError
 from .personas import GHOSTS, pick
+from .report import markdown
 
 
 def check_model(llm: LLM) -> str | None:
@@ -54,6 +56,9 @@ def main(argv: list[str] | None = None) -> int:
     h.add_argument("--base-url", help="OpenAI-compatible endpoint (default: $GHOST_LLM_BASE_URL or local Ollama)")
     h.add_argument("--headed", action="store_true", help="show the browser windows")
     h.add_argument("--open", action="store_true", help="open the report when done")
+    h.add_argument("--fail-on-haunting", action="store_true",
+                   help="exit with code 3 if any ghost has a proven haunting (for CI)")
+    h.add_argument("--summary", type=Path, help="append a Markdown summary to this file (e.g. $GITHUB_STEP_SUMMARY)")
 
     w = sub.add_parser("web", help="start the local web UI")
     w.add_argument("--port", type=int, default=8765)
@@ -109,6 +114,14 @@ def main(argv: list[str] | None = None) -> int:
     print(f"\nReport: {report}")
     if args.open:
         webbrowser.open(report.as_uri())
+    run = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    if args.summary:
+        with args.summary.open("a", encoding="utf-8") as f:
+            f.write(markdown(run) + "\n")
+    proven = sum(len(v["hauntings"]) for v in run["visits"])
+    if args.fail_on_haunting and proven:
+        print(f"{proven} proven haunting(s).", file=sys.stderr)
+        return 3
     return 0
 
 

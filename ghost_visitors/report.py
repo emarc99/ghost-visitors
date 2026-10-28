@@ -122,3 +122,21 @@ def render(run: dict) -> str:
 {"".join(_visit(v) for v in visits)}
 <footer>Ghost Visitors · {_e(run["model"])} {where} · {usage.get("calls", 0)} model calls, {usage.get("prompt_tokens", 0)} prompt + {usage.get("completion_tokens", 0)} completion tokens, {usage.get("seconds", 0)}s of thinking · run took {run["seconds"]}s</footer>
 </div></body></html>"""
+
+
+def markdown(run: dict) -> str:
+    """A short summary for places that render Markdown, like a CI job summary."""
+    lines = [f"## 👻 Haunting report: {run['url']}", "", f"Goal: {run['goal']} · model `{run['model']}`", ""]
+    for v in run["visits"]:
+        lines += [f"### {v['name']}: {OUTCOMES.get(v['outcome'], OUTCOMES['error'])[0]}", ""]
+        if v.get("verdict"):
+            lines += [f"> {v['verdict']}", ""]
+        for c in v["hauntings"]:
+            proof = "; ".join(f"{m['id']} on {m['page']}: {m['detail']}" for m in c.get("measured", []))
+            lines.append(f"- **{c['kind']}**: {c['text']} _({proof})_")
+        if not v["hauntings"]:
+            lines.append("- Nothing proven. This ghost rests easy.")
+        if v["whispers"]:
+            lines.append(f"- {len(v['whispers'])} unproven whisper(s) set aside")
+        lines.append("")
+    return "\n".join(lines)

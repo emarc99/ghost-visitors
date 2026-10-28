@@ -51,6 +51,34 @@ def test_ghosts_command_lists_everyone(capsys):
     assert "marisol" in out and "tomas" in out and "rosa" in out
 
 
+def fake_run(tmp_path, hauntings):
+    run = {"url": "http://bakery", "goal": "buy bread", "model": "gemma4:e2b", "visits": [{
+        "name": "Abuela Rosa", "outcome": "succeeded", "verdict": "Too faint for my eyes.", "whispers": [{}],
+        "hauntings": hauntings}]}
+    (tmp_path / "run.json").write_text(json.dumps(run), encoding="utf-8")
+    (tmp_path / "index.html").write_text("", encoding="utf-8")
+    return lambda *args, **kwargs: tmp_path
+
+
+def test_fail_on_haunting_exits_3_and_writes_summary(tmp_path, monkeypatch):
+    haunting = {"kind": "small_text", "text": "Tiny letters.",
+                "measured": [{"id": "E1", "page": "/", "detail": "4 text(s) under 12px"}]}
+    monkeypatch.setattr("ghost_visitors.cli.check_model", lambda llm: None)
+    monkeypatch.setattr("ghost_visitors.run.run_haunting", fake_run(tmp_path, [haunting]))
+    summary = tmp_path / "summary.md"
+    assert main(["haunt", "http://bakery", "--ghosts", "rosa", "--fail-on-haunting", "--summary", str(summary)]) == 3
+    text = summary.read_text(encoding="utf-8")
+    assert "### Abuela Rosa: Rested in peace" in text
+    assert "- **small_text**: Tiny letters. _(E1 on /: 4 text(s) under 12px)_" in text
+    assert "1 unproven whisper(s) set aside" in text
+
+
+def test_fail_on_haunting_passes_a_clean_site(tmp_path, monkeypatch):
+    monkeypatch.setattr("ghost_visitors.cli.check_model", lambda llm: None)
+    monkeypatch.setattr("ghost_visitors.run.run_haunting", fake_run(tmp_path, []))
+    assert main(["haunt", "http://bakery", "--ghosts", "rosa", "--fail-on-haunting"]) == 0
+
+
 def test_unknown_ghost_is_rejected(capsys):
     assert main(["haunt", "http://example.com", "--ghosts", "casper"]) == 2
     assert "unknown ghost(s): casper" in capsys.readouterr().err
