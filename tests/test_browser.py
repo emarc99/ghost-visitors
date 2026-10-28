@@ -55,8 +55,20 @@ def test_keyboard_ghost_hears_focus_and_typing_into_nothing(browser, bakery):
         for _ in range(3):
             heard = body.act({"action": "tab"}, scan)
         assert heard.endswith('combobox "Bread"')
+        assert "is a dropdown set to 'Pan de muerto ($6)'" in body.act({"action": "space"}, scan)
         body.act({"action": "tab"}, scan)
         assert body.act({"action": "type", "text": "Rosa"}, scan) == "typed 'Rosa' into [4] 'Your name'"
+    finally:
+        body.close()
+
+
+def test_keyboard_ghost_hears_a_reload(browser, bakery):
+    body = Body(browser, GHOSTS["tomas"])
+    try:
+        body.goto(bakery["fixed"] + "/")
+        scan, _, _ = body.observe()
+        body.act({"action": "tab"}, scan)
+        assert body.act({"action": "enter"}, scan).endswith("the page reloaded and focus is back on the page itself")
     finally:
         body.close()
 

@@ -329,12 +329,21 @@ class Body:
         keys = {"tab": "Tab", "shift_tab": "Shift+Tab", "enter": "Enter", "space": " "}
         if self.ghost.keyboard_only:
             if kind in keys:
+                control, _ = self._focused(scan)
+                if kind in ("enter", "space") and control and control["role"] == "combobox":
+                    # A headless select's popup swallows later keys, so the ghost uses type-to-select instead.
+                    return (f"[{control['id']}] is a dropdown set to '{control.get('value', '')}'; "
+                            "type an option's name to choose it, then press tab")
                 before = self.page.url
+                self.page.evaluate("window.__ghostStayed = true")
                 self.page.keyboard.press(keys[kind] if kind != "space" else "Space")
                 self.page.wait_for_timeout(500 if kind in ("enter", "space") else 150)
                 pressed = f"pressed {keys[kind].strip() or 'Space'}"
                 if self.page.url != before:
                     return pressed
+                self.page.wait_for_load_state("load")
+                if not self.page.evaluate("window.__ghostStayed === true"):
+                    return f"{pressed}; the page reloaded and focus is back on the page itself"
                 return f"{pressed}; {self._announce(self._focused(scan)[0])}"
             if kind == "type":
                 text = str(action.get("text", ""))
